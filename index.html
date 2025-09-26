@@ -1,0 +1,1048 @@
+<html lang="en">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>MAGREF</title>
+    <meta name="description" content="Masked Guidance for Any-Reference Video Generation">
+    <meta name="keywords" content="Video generation, Diffusion model">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#EDE8F5">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" href="./assets/index.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css'>
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon">
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-stretch: 100%;
+            font-display: block;
+            font-weight: 300 700;
+            src: url('./assets/roboto.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        @font-face {
+          font-family: 'DancingScript';
+          src: url('./assets/DancingScript-Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Caveat';
+          src: url('./assets/Caveat-Medium.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Alegreya';
+          src: url('./assets/Alegreya-Regular.ttf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        video {
+            background-color: #000000;
+            aspect-ratio: 16 / 9;
+        }
+
+        section.portrait video {
+            background-color: #000000;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        section.multi_ip video {
+            background-color: #000000;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+
+        section.portrait .prompt-wrap.full-screen-wrap video {
+            object-fit: cover;
+        }
+
+        section.portrait .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        section.portrait2 .flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        section.portrait .flex > div {
+            flex: 0 0 calc((100% - 5 * 10px) / 6);
+        }
+        section.portrait2 .flex > div {
+            flex: 0 0 calc((100% - 1 * 10px) / 2);
+        }
+
+        section.portrait .prompt {
+            font-size: 10px;
+        }
+        section.portrait2 .prompt {
+            font-size: 12px;
+        }
+
+        section.portrait .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section.portrait2 .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            section.portrait .flex > div {
+                flex: 0 0 calc((100% - 1 * 10px) / 2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            section.portrait2 .flex > div {
+                flex: 0 0 calc((100% - 0 * 10px) / 1);
+            }
+        }
+
+        /* Ensure prompt adjusts for portrait mode */
+        .portrait .prompt {
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        .portrait2 .prompt{
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: "Roboto", sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        #intro {
+            padding: 100px 0 80px 0;
+            justify-content: center; /* Center content vertically */
+            text-align: center; /* Center text alignment */
+            background-image: url('./assets/background.png');
+            background-size: cover; /* Cover the entire container */
+            background-position: center; /* Center the background image */
+            color: #ffffff; /* Ensure text color is readable */
+        }
+
+        #intro h1 {
+            font-size: 90px;
+            font-weight: 300;
+            margin: 20px 0;
+        } 
+
+        #intro h2 {
+            margin: 20px 0 40px 0;
+            font-weight: 300;
+            color: #ffffff
+        }
+
+        #intro h2 strong {
+            color: #fff;
+        }
+
+        .authors {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 25px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-block {
+            display: inline-block;
+            margin: 0 10px 0 10px;
+        }
+
+        .author-block a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .author-block a:hover {
+            color: #fff;
+        }
+
+        .author-affiliation {
+            font-size: 16px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-affiliation .author-block {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        section {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 0 10%;
+        }
+
+        .button {
+            background-color: #ccc;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #fff;
+        }
+
+        .bibtex-section {
+            background-color: #111;
+            padding: 40px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+        }
+
+        .bibtex-section h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .bibtex-code {
+            background-color: #222;
+            color: #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            display: inline-block;
+            font-family: monospace;
+            max-width: 800px;
+            overflow-x: auto;
+        }
+
+        section {
+            margin-top: 100px;
+        }
+        section:first-of-type {
+            margin-top: 0;
+        }
+
+        .title {
+            background-color: #000;
+            position: sticky;
+            top: 0;
+            padding: 20px 10%;
+            font-size: 20px;
+            font-weight: 600;
+            z-index: 1000;
+            min-height: 60px;
+            box-sizing: border-box;
+        }
+
+        .description {
+            padding: 0 10% 20px 10%;
+            color: #999;
+            line-height: 25px;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .flex-row {
+            display: flex;
+            column-gap: 5px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            padding: 0 5px 5px 5px;
+            
+        }
+
+        .flex-row > div {
+            flex-grow: 1;
+            flex-basis: 0;
+            position: relative;
+        }
+
+        .flex > div {
+            width: calc(100% / 3 - 5px * 2 / 3);
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+            position: relative;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .prompt-wrap {
+            position: relative;
+        }
+
+        .flex-2 {
+            justify-content: center;
+            column-gap: 5px;
+        }
+        .flex-2 > div {
+            width: calc(100% / 2 - 5px / 2);
+            min-width: calc(100% / 3 - 5px * 2 / 3);
+            max-width: calc(100vh - 200px);
+        }
+
+        video, img {
+            width: 100%;
+        }
+
+        .loading-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .loading-icon {
+            font-size: 48px;
+        }
+
+        .prompt {
+            max-width: calc(100% - 20px);
+            position: absolute;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.9);
+            font-size: 10px;
+            backdrop-filter: blur(10px);
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            box-sizing: border-box;
+        }
+
+        .flex-very-compact .full-screen-button {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            border-radius: 0;
+        }
+
+        .chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: bold;
+            color: #d18585;
+            font-size: 1.1em;
+        }
+
+        @media (hover: hover) {
+            .prompt-wrap:hover .prompt,
+            .full-screen-wrap:hover .full-screen-button {
+                opacity: 1;
+                pointer-events: all;
+            }
+            #contributors a:hover {
+                background-color: #222;
+            }
+        }
+
+        @media (hover: none) {
+            #contributors a {
+                pointer-events: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .flex-dynamic > div {
+                width: calc(100% / 2 - 5px / 2);
+            }
+        }
+
+        @media (max-width: 640px) {
+            #intro h1 {
+                font-size: 50px;
+            }
+            #intro h2 {
+                font-size: 20px;
+            }
+            .ruler {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 512px) {
+            .flex-dynamic > div,
+            .flex-dynamic-1 > div {
+                width: 100%;
+            }
+
+            .content {
+                padding: 0 12px;
+            }
+
+            .description {
+                padding: 0 12px 20px 12px;
+            }
+
+            .title {
+                padding: 20px 12px;
+            }
+
+            .ruler-tight {
+                font-size: 6px;
+                column-gap: 0;
+            }
+
+            .title-long {
+                font-size: 16px;
+            }
+
+        }
+
+        .margin-top {
+            margin-top: 50px;
+        }
+
+        .ruler {
+            text-align: center;
+            position: sticky;
+            top: 60px;
+            z-index: 999;
+            background-color: #000;
+            color: #999;
+            padding: 5px 0;
+        }
+
+        .ruler > div {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .selected {
+            box-shadow: 0 0 0 5px #fff;
+        }
+
+        #title-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #title-icon {
+          height: 8em;
+          width: auto;
+          margin-right: 0px;
+          vertical-align: middle;
+        }
+
+        .title-art {
+          font-family: 'DancingScript', sans-serif;
+        }
+
+        .title-art2 {
+          font-family: 'Caveat', sans-serif;
+        }
+
+        .title-art3 {
+          font-family: 'Alegreya', sans-serif;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: rgb(255, 255, 255);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        #video-wrapper {
+          border-radius: 50px;
+          max-width: 720px;
+          padding-bottom: 40%; 
+          margin: 0 auto;
+          background: #000000;
+        }
+
+        .ethics-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .acknowledgements-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+    <section id="intro">
+        <div class="content">
+            <div id="title-container">
+              <img id="title-icon" src="./assets/icon-new.png" alt="Icon">
+              <h1 class="title-art"><strong>MAGREF</strong></h1>
+            </div>
+            <h2 class="title-art2">Masked Guidance for Any-Reference Video Generation</h2>
+
+            <a class="button" href="https://github.com/MAGREF-Video/MAGREF" target="_blank" rel="noopener noreferrer">
+                <i class="fa fa-github" style="font-size:17px"></i>
+                GitHub
+            </a>
+            <a class="button" href="https://magref-video.github.io/magref.github.io/" target="_blank" rel="noopener noreferrer">
+                Project
+            </a>
+            <a class="button" href="https://github.com/MAGREF-Video/MAGREF" target="_blank" rel="noopener noreferrer">
+                Video
+            </a>
+            <a class="button" href="https://github.com/MAGREF-Video/MAGREF" target="_blank" rel="noopener noreferrer">
+                Benchmark
+            </a>
+            
+        </div>
+
+    </section>
+
+    <!-- 文本标题 -->
+    <div class="container text-center" style="margin-top: 50px;">
+    <p class="title-art3" style="font-size: 1.6em;">Episodes Created from MAGREF-generated Videos</p>
+    <p class="description" style="font-size: 1.0em;">Turn on the sound for a better viewing experience</p>
+    </div>
+
+    <!-- 视频主体 -->
+    <div class="show-neighbors" style="display: flex; justify-content: center; flex-direction: column; margin-top: 30px; margin-bottom: 40px;">
+    <div style="display: flex; justify-content: center;">
+        <div style="
+        border: 4px solid #ffffff44;
+        border-radius: 2vmin;
+        padding: 8px;
+        background: #1c1c1c;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        ">
+        <video
+            src="./assets/magref_video/demo/magref_demo.mp4"
+            playsinline
+            controls
+            style="
+            width: 90vw;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 2vmin;
+            background: black;
+            display: block;
+            "
+        ></video>
+        </div>
+    </div>
+    </div>
+
+
+
+
+    <section class="acknowledgements-section" style="max-width: 1200px; margin: 0 auto;">
+        <div style="
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        ">
+                <h3 style="text-align: center; font-weight: bold; font-size: 1.8rem; margin-bottom: 1rem; color: white;">
+                    Abstract
+                </h3>
+                    <p style="font-size: 1.05rem; line-height: 1.6; color: white; text-align: left; text-indent: 2em;"></p>
+                        Video generation has made substantial strides with the emergence of deep generative models, especially diffusion-based approaches. 
+                        However, video generation based on multiple reference subjects still faces significant challenges in maintaining multi-subject
+                        consistency and ensuring high generation quality. In this paper, we propose MAGREF, a unified framework for any-reference
+                        video generation that introduces masked guidance to enable coherent multi-subject video synthesis conditioned on diverse reference 
+                        images and a textual prompt. Specifically, we propose (1) a region-aware dynamic masking mechanism that enables a single model to flexibly
+                        handle various subject inference, including humans, objects, and backgrounds, without architectural changes, and (2) a pixel-wise channel
+                        concatenation mechanism that operates on the channel dimension to better preserve appearance features. Our model delivers state-of-the-art
+                        video generation quality, generalizing from single-subject training to complex multi-subject scenarios with coherent synthesis and precise 
+                        control over individual subjects, outperforming existing open-source and commercial baselines. To facilitate evaluation, we also introduce a 
+                        comprehensive multi-subject video benchmark. Extensive experiments demonstrate the effectiveness of our approach, paving the way for scalable, 
+                        controllable, and high-fidelity multi-subject video synthesis. We will open-source implementations & checkpoint of MAGREF together with the 
+                        evaluation benchmark in future.
+                    </p>
+        </div>
+    </section>
+
+
+    
+
+
+    <section id="video">
+        <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+          Single-ID Video Generation
+        </div>
+        <div class="description">
+            Given a single facial reference, <em><strong>MAGREF</strong></em> generates identity-consistent videos across diverse scenes and actions. Our method ensures high-fidelity facial appearance preservation while animating the subject in alignment with the prompt, enabling vivid storytelling and expressive motion grounded in a single identity.
+        </div>
+        
+        <div class="flex flex-dynamic">
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_3.mp4"></video>
+                <div class="prompt">A man standing at an easel, focused intently as his brush dances across the canvas. His expression is one of deep concentration, with a hint of satisfaction as each brushstroke adds color and form. He wears a paint-splattered apron, and his hands move with confident precision.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_4.mp4"></video>
+                <div class="prompt">A man with a rugged beard, wearing a leather jacket, riding a vintage motorcycle along a desert highway. His expression is focused, eyes narrowed slightly against the wind, as the setting sun casts a warm glow over the landscape. The highway stretches endlessly, bordered by arid land with occasional cacti and rocky outcrops. The motorcycle roars smoothly, leaving a light trail of dust. In the distance, hazy mountains are silhouetted against the amber sky.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_9.mp4"></video>
+                <div class="prompt">A man is hiking through a dense forest. He is wearing a backpack, hiking boots, and a cap, with a light jacket to protect against the wind. The trail is narrow, surrounded by tall trees and thick underbrush. The man pauses to take in the scenery, breathing in the fresh air while the sounds of birds and rustling leaves fill the background.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_8.mp4"></video>
+                <div class="prompt">A man sitting at a rustic wooden table in a café, sipping his coffee. He has short black hair and is dressed in a casual button-up shirt and jeans. The café has a warm, cozy atmosphere, with soft lighting and a few patrons in the background. The man seems relaxed as he scrolls through his phone, enjoying the peaceful moment away from the hustle of the day.</div>
+            </div>
+            
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_20.mp4"></video>
+                <div class="prompt">A girl standing by the beach, her long black hair gently swaying in the breeze. She is wearing a flowy, white sundress and has her hands on her hips. The golden sand stretches out behind her, with the waves softly crashing on the shore. The sun is setting in the background, casting a warm orange glow over the scene.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/famous_human_05.mp4"></video>
+                <div class="prompt">A man is playing an acoustic guitar on a beach at sunset. He is wearing a simple t-shirt, shorts, and sunglasses, with his feet buried in the warm sand. The sun is dipping below the horizon, casting an orange glow across the sky and reflecting off the ocean. The sound of gentle waves adds to the relaxing atmosphere as the man strums a soft tune.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_5.mp4"></video>
+                <div class="prompt">A man celebrating his birthday, holding a piece of cake while he prepares to blow out the candles. He is smiling warmly, and as he closes his eyes to make a wish, a hint of emotion crosses his face—perhaps a moment of nostalgia or excitement. Around him, soft, ambient lighting from nearby candles casts a warm glow, and there are a few balloons and decorations in the background, suggesting a cozy celebration at home. He then blows out the candles gently, and his smile grows wider, radiating happiness and satisfaction.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_6.mp4"></video>
+                <div class="prompt">A young boy sitting at a table, eating a piece of food. He appears to be enjoying his meal, as he takes a bite and chews it. The boy is wearing a blue shirt and has short hair. The background is dark, with some light coming from the left side of the frame. There is a straw visible on the right side of the frame, suggesting that there may be a drink next to the boy's plate.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_7.mp4"></video>
+                <div class="prompt">A boy walking along a city street, filmed in black and white on a classic 35mm camera. His expression is thoughtful, his brow slightly furrowed as if he's lost in contemplation. The film grain adds a textured, timeless quality to the image, evoking a sense of nostalgia. Around him, the cityscape is filled with vintage buildings, cobblestone sidewalks, and softly blurred figures passing by, their outlines faint and indistinct. Streetlights cast a gentle glow, while shadows play across the boy's path, adding depth to the scene.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_10.mp4"></video>
+                <div class="prompt">A man sitting on a park bench under a large oak tree, reading a book. He has a beard and is wearing a casual sweater and jeans. The park is quiet and green, with sunlight filtering through the tree branches. The man seems completely absorbed in his book, occasionally glancing up to enjoy the peaceful surroundings.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singleface_1.mp4"></video>
+                <div class="prompt">A young man standing outdoors in a snowy park. he is wearing a colorful winter jacket with a floral pattern and a white knit hat. The background shows a snowy landscape with trees, benches, and a metal fence. The ground is covered in snow, and there is a light snowfall in the air. The man appears to be enjoying the winter weather, as he smiles and gives a thumbs-up gesture towards the camera. The overall atmosphere of the video is cheerful and festive, capturing the beauty of a snowy day in a park.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/famous_human_04.mp4"></video>
+                <div class="prompt">A young man who appears to be a content creator or streamer. he is wearing a green sleeveless top and red headphones. The background is illuminated with vibrant neon lights, predominantly in shades of purple and blue, creating a lively and energetic atmosphere. The man is seated in front of a microphone, suggesting he is recording a podcast, streaming a live broadcast, or engaging in some form of online communication. The setting appears to be a well-lit room with a curtain and a lamp visible in the background, adding to the cozy and inviting ambiance. </div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/famous_human_01.mp4"></video>
+                <div class="prompt">A woman sitting at a red plastic table on a lively Beijing night market street. She is casually dressed and uses plastic gloves to peel spicy crayfish while smiling and chatting with local diners. Lanterns sway above, and the sizzling sounds of street food fill the air. The video captures a surprising cultural crossover, blending global celebrity with authentic local experience.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_30.mp4"></video>
+                <div class="prompt">A woman is sitting at a café terrace, enjoying a cup of tea. She is wearing a light blouse and has her hair pulled back into a bun. The table in front of her is set with a small plate of pastries, and she takes a slow sip from her cup, savoring the moment. The bustling city street in the background creates a lively but relaxed atmosphere, as people walk by and cars pass in the distance.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/single_id/singlehuman_26.mp4"></video>
+                <div class="prompt">A woman jogging along a trail beside a serene lake. She has short, curly hair and is wearing athletic wear and sneakers. The surrounding trees and the shimmering water create a peaceful atmosphere, while the woman maintains a steady pace, focusing on her exercise. The morning sunlight casts a soft glow on the scene, adding to the sense of calm.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video">
+      <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+        Multi-ID Video Generation 
+      </div>
+
+      <div class="description">
+        <em><strong>MAGREF</strong></em> enables coherent video generation conditioned on multiple distinct reference identities. Given separate facial images for each subject, our framework preserves individual identity features while synthesizing videos with realistic multi-person interactions, consistent expressions, and contextual scene alignment. It supports diverse configurations including two-person pairs, group scenarios, and subject-to-scene integration.
+      </div>
+
+      <div class="flex flex-dynamic">
+
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/famous_human_06.mp4"></video>
+              <div class="prompt">Two individuals taking a selfie together in an indoor setting. The man is holding a smartphone with his right hand extended forward, capturing the photo. He is dressed in a light gray blazer over a white shirt. The woman beside him has long blonde hair and is wearing a white top. Both are smiling broadly, appearing cheerful and engaged in the moment.  The background suggests they are in a modern office or a similar professional environment, with a mix of neutral tones and greenery visible behind them. The lighting is bright and even, likely from overhead fluorescent lights, which illuminates the scene clearly without harsh shadows.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/famous_human_09.mp4"></video>
+            <div class="prompt">Two men taking a selfie together in an indoor setting. One of them, with a bright and expressive smile, holds the smartphone at arm’s length to frame the shot. He has voluminous, natural-textured hair and appears enthusiastic and energetic. Standing beside him is another man with neatly styled hair and a composed expression, wearing a white athletic jersey with black accents.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/famous_human_08.mp4"></video>
+              <div class="prompt">The video captures a scene inside a modern café with large glass windows overlooking a busy city street. Two men are seated across from each other at a wooden table, engaged in a thoughtful conversation. The man on the left is dressed in a navy blue suit with a crisp white shirt and a vibrant orange tie, complemented by a red and white boutonnière on his lapel. He smiles warmly as he speaks, his expression animated and enthusiastic.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_12.mp4"></video>
+              <div class="prompt">A group of three young women enjoying a casual outdoor gathering on a patio. They are seated on chairs and a bench, surrounded by greenery and potted plants, suggesting a relaxed, sunny day. The setting appears to be a residential area with white railings and balconies visible in the background.  The women are holding drinks in glass bottles, with one containing a light-colored beverage and another a darker, possibly fruit-based drink. They are clinking their bottles together in a toast, indicating camaraderie and celebration. One woman is lying back on a cushioned chair, using her smartphone, while the others sit upright, smiling and engaging with each other.  </div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_2.mp4"></video>
+            <div class="prompt">Three individuals seated outdoors on a bench, engaged with electronic devices. The setting appears to be a park or a similar public space, with trees and greenery visible in the background. The lighting suggests it is daytime, possibly late afternoon given the softness of the light.  The person on the left, wearing a green and white checkered shirt, is focused on a smartphone, occasionally gesturing with his hands as if explaining something. The individual in the middle, dressed in a beige sweater, holds a tablet and looks intently at it, occasionally turning his head slightly towards the person next to him.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_4.mp4"></video>
+            <div class="prompt">The video captures a lively scene featuring three women dressed in glamorous, sequined outfits, celebrating with gifts. They stand against a backdrop of twinkling fairy lights, creating a festive atmosphere. Each woman holds a wrapped gift box, which they occasionally toss into the air, adding to the celebratory mood. Their movements are energetic; they dance and jump, their hair bouncing with each step. The camera remains static throughout, focusing on capturing the joyful expressions and interactions among the women. The overall setting suggests a party or holiday celebration, with the bright lights and festive attire enhancing the cheerful ambiance.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_1.mp4"></video>
+              <div class="prompt">The video depicts an indoor scene where two individuals are engaged in a conversation. The setting appears to be a well-lit room with natural light streaming through large windows. The room is furnished with a wheelchair positioned near the back, suggesting it might be a medical or care facility. A desk with a laptop and some other items is visible on the right side of the frame.  The person on the left, dressed in a gray uniform, is holding a tablet and gesturing with her hands while speaking. Her posture indicates she is explaining something, possibly related to the tablet's content.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_8.mp4"></video>
+            <div class="prompt">The video captures a cozy indoor scene featuring a couple sitting closely on a beige couch. The woman is holding a tablet and appears engaged with its content, smiling warmly. The man, seated beside her, leans in affectionately, his arm around her shoulders, and gestures towards the tablet screen, possibly discussing something amusing or interesting. Both individuals exhibit relaxed and happy expressions.  The background reveals a simple, modern living room setting with neutral tones.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multiface_13.mp4"></video>
+            <div class="prompt">The video captures a serene and static scene of two individuals seated on a couch in a cozy living room setting. The person on the left is holding a blue bottle, possibly a beverage, while the individual on the right is holding a white bowl, which could contain snacks. They are both dressed casually, with the person on the left wearing a light-colored top and the one on the right in a red and black checkered shirt. The room is warmly lit by a floor lamp to their left, casting a soft glow that enhances the intimate atmosphere. </div>
+          </div>
+           <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multihuman_6.mp4"></video>
+            <div class="prompt">The video captures a scene set indoors, likely in an art studio or classroom, where two individuals are engaged in a creative activity. The primary focus is on a man seated at an easel, actively painting on a canvas. He is wearing a white shirt and a dark apron splattered with paint, indicating his involvement in the artistic process. His posture suggests concentration as he works on his artwork.  A woman stands beside him, leaning slightly forward with her arms around his shoulders. She is dressed in a denim jacket and a patterned dress, her hands resting gently on his shoulders and occasionally gesturing towards the canvas. </div>
+          </div>
+           <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multihuman_10.mp4"></video>
+            <div class="prompt">The video depicts an emotional scene set outdoors, likely in a park or wooded area, given the blurred greenery and trees in the background. The lighting suggests it is daytime, possibly overcast due to the soft shadows.  A man and a woman are the central figures. The man, wearing a light blue denim shirt, has his arm around the woman's shoulder, offering comfort. The woman, dressed in a brown leather jacket, appears distressed, covering her face with her hands at one point. Her posture and facial expression suggest she might be crying or overwhelmed by emotion.</div>
+          </div>
+           <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/multi_id/multihuman_11.mp4"></video>
+            <div class="prompt">The video opens with a serene outdoor setting in a forest, featuring a green tent and two individuals seated on a log. The scene is set during the daytime, with clear weather and sunlight filtering through the trees. The individuals are dressed casually, with one person wearing a white tank top and patterned shorts, and the other in a plaid shirt and dark pants. </div>
+          </div>
+      </div>
+  </section>
+
+    <section id="multi_ip">
+        <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+            ID-Object-Enviroment Video Generation
+        </div>
+
+        <div class="description">
+            <em><strong>MAGREF</strong></em> enables compositional video synthesis by incorporating multiple reference types—including human identities, objects, and background environments. Our model generates coherent and natural interactions across these modalities, supporting scenarios such as pet companionship, character-object interplay, and contextual scene alignment.
+        </div>
+
+        <div class="flex flex-dynamic">
+
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/humanobj_14.mp4"></video>
+                <div class="prompt">A man sitting on the grass in the park, a dog walking around him.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/humanobj_12.mp4"></video>
+                <div class="prompt">A man sitting in the park, a cat walking around his feet.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/humanobj_10.mp4"></video>
+                <div class="prompt">A man sitting in the office, a cat sitting on his legs.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/faceobj_3.mp4"></video>
+                <div class="prompt">A man is standing on the beach, holding a dog in his arms.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/humanobj_1.mp4"></video>
+              <div class="prompt">A man feeding a bird in the park.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/humanobj_3.mp4"></video>
+              <div class="prompt">A man standing in the park watching the flying bird.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/faceobj_1.mp4"></video>
+              <div class="prompt">A man playing with his dog in front of the house.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/faceobj_13.mp4"></video>
+              <div class="prompt">A woman stands on the bridge, wearing a black one-piece swimsuit with the Nike Air logo across the front. The swimsuit fits snugly, and she poses confidently against the backdrop of the bridge, her arms relaxed by her sides.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/magref_video/id_obj_env/faceobj_14.mp4"></video>
+              <div class="prompt">A woman stands in front of a shop, wearing a simple black oversized t-shirt with a small logo on the chest. The t-shirt is paired with casual attire, and she stands confidently, holding nothing in her hands as she gazes around the scene.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ethics-section">
+        <h3>Ethics Concerns</h3>
+        <p>
+            All images featured in these demos are either generated by models or sourced from publicly available datasets, and are intended solely for the purpose of demonstrating the technical capabilities of our research. If you believe any content infringes upon rights or raises ethical concerns, please contact us. We will address the issue and remove the material promptly.
+        </p>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Clone the items to show neighbors in the carousel
+            $('.carousel-item', '.show-neighbors').each(function () {
+                var next = $(this).next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+                }
+                next.children(':first-child').clone().appendTo($(this));
+            }).each(function () {
+                var prev = $(this).prev();
+                if (!prev.length) {
+                    prev = $(this).siblings(':last');
+                }
+                prev.children(':nth-last-child(2)').clone().prependTo($(this));
+            });
+
+            function playActiveVideo() {
+                // Stop all videos
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+                
+                // Find the active carousel item (the middle one) and play its video
+                var activeVideo = $('#carouselExampleCaptions .carousel-item.active .video-wrapper video.carousel-video').get(0);
+
+                // Play the video only if it exists
+                if (activeVideo) {
+                    activeVideo.play();
+                }
+            }
+
+            // On slide event, pause all videos
+            $('#carouselExampleCaptions').on('slide.bs.carousel', function () {
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+            });
+
+            // On slid event, play the active video
+            $('#carouselExampleCaptions').on('slid.bs.carousel', function () {
+                playActiveVideo();
+            });
+
+            // Play the active video on page load
+            playActiveVideo();
+        });
+    </script>
+
+</body>
+
+<footer class="footer" style="text-align: center;">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-full">
+                <div class="content">
+                    <p>
+                        Website inspired by <a href="https://phantom-video.github.io/Phantom/">Phantom</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</html>

@@ -1,0 +1,974 @@
+<html lang="en">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Phantom</title>
+    <meta name="description" content="Subject-Consistent Video Generation via Cross-Modal Alignment">
+    <meta name="keywords" content="Video generation, Diffusion model, Subject-consistent">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#EDE8F5">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" href="./assets/index.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css'>
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon">
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-stretch: 100%;
+            font-display: block;
+            font-weight: 300 700;
+            src: url('./assets/roboto.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        @font-face {
+          font-family: 'DancingScript';
+          src: url('./assets/DancingScript-Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Caveat';
+          src: url('./assets/Caveat-Medium.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Alegreya';
+          src: url('./assets/Alegreya-Regular.ttf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        video {
+            background-color: #000000;
+            aspect-ratio: 16 / 9;
+        }
+
+        section.portrait video {
+            background-color: #000000;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        section.multi_ip video {
+            background-color: #000000;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+
+        section.portrait .prompt-wrap.full-screen-wrap video {
+            object-fit: cover;
+        }
+
+        section.portrait .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        section.portrait2 .flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        section.portrait .flex > div {
+            flex: 0 0 calc((100% - 5 * 10px) / 6);
+        }
+        section.portrait2 .flex > div {
+            flex: 0 0 calc((100% - 1 * 10px) / 2);
+        }
+
+        section.portrait .prompt {
+            font-size: 10px;
+        }
+        section.portrait2 .prompt {
+            font-size: 12px;
+        }
+
+        section.portrait .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section.portrait2 .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            section.portrait .flex > div {
+                flex: 0 0 calc((100% - 1 * 10px) / 2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            section.portrait2 .flex > div {
+                flex: 0 0 calc((100% - 0 * 10px) / 1);
+            }
+        }
+
+        /* Ensure prompt adjusts for portrait mode */
+        .portrait .prompt {
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        .portrait2 .prompt{
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: "Roboto", sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        #intro {
+            padding: 100px 0 80px 0;
+            justify-content: center; /* Center content vertically */
+            text-align: center; /* Center text alignment */
+            background-image: url('./assets/background.png');
+            background-size: cover; /* Cover the entire container */
+            background-position: center; /* Center the background image */
+            color: #ffffff; /* Ensure text color is readable */
+        }
+
+        #intro h1 {
+            font-size: 90px;
+            font-weight: 300;
+            margin: 20px 0;
+        } 
+
+        #intro h2 {
+            margin: 20px 0 40px 0;
+            font-weight: 300;
+            color: #ffffff
+        }
+
+        #intro h2 strong {
+            color: #fff;
+        }
+
+        .authors {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 25px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-block {
+            display: inline-block;
+            margin: 0 10px 0 10px;
+        }
+
+        .author-block a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .author-block a:hover {
+            color: #fff;
+        }
+
+        .author-affiliation {
+            font-size: 16px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-affiliation .author-block {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        section {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 0 10%;
+        }
+
+        .button {
+            background-color: #ccc;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #fff;
+        }
+
+        .bibtex-section {
+            background-color: #111;
+            padding: 40px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+        }
+
+        .bibtex-section h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .bibtex-code {
+            background-color: #222;
+            color: #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            display: inline-block;
+            font-family: monospace;
+            max-width: 800px;
+            overflow-x: auto;
+        }
+
+        section {
+            margin-top: 100px;
+        }
+        section:first-of-type {
+            margin-top: 0;
+        }
+
+        .title {
+            background-color: #000;
+            position: sticky;
+            top: 0;
+            padding: 20px 10%;
+            font-size: 20px;
+            font-weight: 600;
+            z-index: 1000;
+            min-height: 60px;
+            box-sizing: border-box;
+        }
+
+        .description {
+            padding: 0 10% 20px 10%;
+            color: #999;
+            line-height: 25px;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .flex-row {
+            display: flex;
+            column-gap: 5px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            padding: 0 5px 5px 5px;
+            
+        }
+
+        .flex-row > div {
+            flex-grow: 1;
+            flex-basis: 0;
+            position: relative;
+        }
+
+        .flex > div {
+            width: calc(100% / 3 - 5px * 2 / 3);
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+            position: relative;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .prompt-wrap {
+            position: relative;
+        }
+
+        .flex-2 {
+            justify-content: center;
+            column-gap: 5px;
+        }
+        .flex-2 > div {
+            width: calc(100% / 2 - 5px / 2);
+            min-width: calc(100% / 3 - 5px * 2 / 3);
+            max-width: calc(100vh - 200px);
+        }
+
+        video, img {
+            width: 100%;
+        }
+
+        .loading-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .loading-icon {
+            font-size: 48px;
+        }
+
+        .prompt {
+            max-width: calc(100% - 20px);
+            position: absolute;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.9);
+            font-size: 10px;
+            backdrop-filter: blur(10px);
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            box-sizing: border-box;
+        }
+
+        .flex-very-compact .full-screen-button {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            border-radius: 0;
+        }
+
+        .chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: bold;
+            color: #d18585;
+            font-size: 1.1em;
+        }
+
+        @media (hover: hover) {
+            .prompt-wrap:hover .prompt,
+            .full-screen-wrap:hover .full-screen-button {
+                opacity: 1;
+                pointer-events: all;
+            }
+            #contributors a:hover {
+                background-color: #222;
+            }
+        }
+
+        @media (hover: none) {
+            #contributors a {
+                pointer-events: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .flex-dynamic > div {
+                width: calc(100% / 2 - 5px / 2);
+            }
+        }
+
+        @media (max-width: 640px) {
+            #intro h1 {
+                font-size: 50px;
+            }
+            #intro h2 {
+                font-size: 20px;
+            }
+            .ruler {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 512px) {
+            .flex-dynamic > div,
+            .flex-dynamic-1 > div {
+                width: 100%;
+            }
+
+            .content {
+                padding: 0 12px;
+            }
+
+            .description {
+                padding: 0 12px 20px 12px;
+            }
+
+            .title {
+                padding: 20px 12px;
+            }
+
+            .ruler-tight {
+                font-size: 6px;
+                column-gap: 0;
+            }
+
+            .title-long {
+                font-size: 16px;
+            }
+
+        }
+
+        .margin-top {
+            margin-top: 50px;
+        }
+
+        .ruler {
+            text-align: center;
+            position: sticky;
+            top: 60px;
+            z-index: 999;
+            background-color: #000;
+            color: #999;
+            padding: 5px 0;
+        }
+
+        .ruler > div {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .selected {
+            box-shadow: 0 0 0 5px #fff;
+        }
+
+        #title-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #title-icon {
+          height: 8em;
+          width: auto;
+          margin-right: 0px;
+          vertical-align: middle;
+        }
+
+        .title-art {
+          font-family: 'DancingScript', sans-serif;
+        }
+
+        .title-art2 {
+          font-family: 'Caveat', sans-serif;
+        }
+
+        .title-art3 {
+          font-family: 'Alegreya', sans-serif;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: rgb(255, 255, 255);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        #video-wrapper {
+          border-radius: 50px;
+          max-width: 720px;
+          padding-bottom: 40%; 
+          margin: 0 auto;
+          background: #000000;
+        }
+
+        .ethics-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .acknowledgements-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+    <section id="intro">
+        <div class="content">
+            <div id="title-container">
+              <img id="title-icon" src="./assets/icon-new.png" alt="Icon">
+              <h1 class="title-art"><strong>Phantom</strong></h1>
+            </div>
+            <h2 class="title-art2">Subject-Consistent Video Generation via Cross-Modal Alignment</h2>
+
+            <div class="authors">
+                <span class="author-block"><a href="https://liulj13.github.io/">Lijie Liu</a><sup>*</sup></span>
+                <span class="author-block"><a href="https://tianxiangma.github.io/">Tianxiang Ma</a><sup>*</sup></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=ac5Se6QAAAAJ">Bingchuan Li</a><sup>* &dagger;</sup></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=ow1jGJkAAAAJ">Zhuowei Chen</a><sup>*</sup></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=X21Fz-EAAAAJ">Jiawei Liu</a></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=9rWWCgUAAAAJ">Qian He</a></span>
+                <span class="author-block">Xinglong Wu</a></span>
+            </div>
+
+            <!-- Added the affiliations section -->
+            <div class="author-affiliation">
+                <p><span><sup>*</sup>Equal contribution,<sup> &dagger;</sup>Project lead</span></p>
+                <p><span>Intelligent Creation Team, ByteDance</span></p>
+            </div>
+
+            <a class="button" href="https://arxiv.org/abs/2502.11079" target="_blank" rel="noopener noreferrer">
+                Research Paper
+            </a>
+            <a class="button" href="https://github.com/Phantom-video/Phantom" target="_blank" rel="noopener noreferrer">
+                <i class="fa fa-github" style="font-size:17px"></i>
+                GitHub
+            </a>
+            
+        </div>
+
+    </section>
+
+    <div class="container text-center" style="margin-top: 50px; text-align: center;">
+      <p class="title-art3" style="font-size: 1.6em;"> Episodes Created from Phantom-generated Videos</p>
+      <p class="description" style="font-size: 1.0em;"> Turn on the sound for a better viewing experience</p>
+    </div>
+    
+
+    <div id="carouselExampleCaptions" class="carousel slide show-neighbors" data-ride="carousel" data-interval="false">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="item__third">
+            <div id="video-wrapper" style="position: relative; width: 100%; height: 0;">
+              <video class="carousel-video" src="./assets/videos/demo/demo1.mp4" playsinline controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 2vmin; background: #2f2f30;"></video>
+            </div>
+            <div id="text-prompt-set-1" class="responsive-text-prompt" style="font-family: Chalkduster; font-size: 14px; color: white; margin-top:10px; margin-bottom:10px;">
+                The Phantom of the Opera
+            </div>
+          </div>
+        </div>
+        
+        <div class="carousel-item">
+          <div class="item__third">
+            <div id="video-wrapper" style="position: relative; width: 100%; height: 0;">
+              <video class="carousel-video" src="./assets/videos/demo/demo2.mp4" playsinline controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 2vmin; background: #2f2f30;"></video>
+            </div>
+            <div id="text-prompt-set-2" class="responsive-text-prompt" style="font-family: Chalkduster; font-size: 14px; color: white; margin-top:10px; margin-bottom:10px;">
+                The New Annabelle
+            </div>
+          </div>
+        </div>
+        
+        <div class="carousel-item">
+          <div class="item__third">
+            <div id="video-wrapper" style="position: relative; width: 100%; height: 0;">
+              <video class="carousel-video" src="./assets/videos/demo/demo3.mp4" playsinline controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 2vmin; background: #2f2f30;"></video>
+            </div>
+            <div id="text-prompt-set-3" class="responsive-text-prompt" style="font-family: Chalkduster; font-size: 14px; color: white; margin-top:10px; margin-bottom:10px;">
+                Ne Zha
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-image: url('./assets/arrow-right.svg'); width: 50px; height: 50px; transform: rotate(180deg);"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true" style="background-image: url('./assets/arrow-right.svg'); width: 50px; height: 50px;"></span>
+        <span class="sr-only">Next</span>
+      </a>
+
+    </div>
+
+
+    <section id="video">
+        <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+          Identity Preserving Video Generation
+        </div>
+        <div class="description">
+            Subject-to-video generation using a facial reference image. <em><strong>Phantom</strong></em> strictly preserves the identity of the reference face while generating vivid videos that follow the provided prompt.
+        </div>
+        
+        <div class="flex flex-dynamic">
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/0_ref.mov"></video>
+                <div class="prompt">A man wearing black sunglasses and a dark brown long windbreaker turns his back to the camera. The wind blows the hem of his clothes, creating a dynamic movement. The camera focuses on his weathered profile, capturing the lines and textures of his face. He stands on a modern city street in Ma Long, which is bustling with traffic and tall skyscrapers.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/1_ref.mov"></video>
+                <div class="prompt">A young boy with tousled brown hair is crouching by a stream in a dense forest. He is dressed in casual clothing, with a blue hoodie and khaki pants, and his shoes are slightly muddy. The background shows the dappled light filtering through the tall trees and a carpet of fallen leaves. He faces the side, reaching out to touch the water, creating small ripples, and looks up with a curious expression.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/2_ref.mov"></video>
+                <div class="prompt">A little girl dressed in a green and yellow dinosaur costume with a tail and a big head is grinning and jumping enthusiastically on a soft, brown sofa. The living room is brightly lit with sunlight coming in through a nearby window, casting a warm glow on the scene. The walls are painted a light blue, and there are books and toys scattered around. The girl's arms are flailing as she bounces, and her dinosaur ears are flopping with each jump.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/9_ref.mov"></video>
+                <div class="prompt">A woman dressed in elegant court attire, a flowing gown, a pearl necklace, and a delicate ivory fan in her gloved hands. She fanned herself slowly, her movements graceful and deliberate. The background was a grand European castle hall, with a huge domed ceiling, smooth marble floors, and exquisite tables, chairs, and candlesticks, emitting soft and warm lighting.</div>
+            </div>
+            
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/4_ref.mov"></video>
+                <div class="prompt">A man in a sharp black suit, paired with a crisp white shirt and a dark tie, is walking down a busy city street. He holds a steaming cup of coffee in one hand, taking occasional sips as he goes. The street is lined with tall buildings and bustling with people. Sunlight filters through the tall windows of nearby skyscrapers, casting a warm glow on the pavement.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/5_ref.mov"></video>
+                <div class="prompt">An older gentleman with a beard and salt-and-pepper hair is mountain biking on a rugged trail. He wears a green, moisture-wicking jersey and padded shorts. The challenging terrain features steep inclines and rocky paths, set against the backdrop of a stunning mountain range. His eyes are locked on the path ahead as he navigates the twists and turns with skill and enthusiasm, illustrating an adventurous and spirited moment.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/6_ref.mov"></video>
+                <div class="prompt">A young tenor with tousled, sandy-blonde hair sings passionately under a single spotlight in an ornate concert hall. He is clad in a sharp, charcoal-grey suit with a vibrant red tie that adds a pop of color. The scene is set against a backdrop of deep blue curtains with golden trim, and the audience is barely visible in the dim light, entranced by his powerful voice. His fervent expression and the way he clutches the microphone stand convey raw emotion and dedication.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/7_ref.mov"></video>
+                <div class="prompt">A tall, elegant woman with curly, auburn hair stands center stage in an opulent opera house. She is dressed in a flowing, emerald-green gown with intricate gold embroidery that glimmers under the stage lights. The background showcases velvety red curtains, ornate golden designs, and an audience that watches in rapt attention. She lifts her arms expressively, her face reflecting the emotion of the aria she sings, creating a powerful and captivating atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/id/8_ref.mov"></video>
+                <div class="prompt">A refined cellist with sleek, chestnut hair sits center stage in an elegant orchestra pit. She wears a floor-length, cobalt blue dress that contrasts beautifully with the golden wood of her cello. The background is filled with crimson curtains, opulent antique decor, and fellow musicians absorbed in their instruments. Her bow hand moves with grace and precision, her head gently swaying with the melancholic melody, creating an atmosphere of profound and moving beauty.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video">
+      <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+        Single Reference Subject-to-Video Generation 
+      </div>
+
+      <div class="description">
+        Subject-to-video generation using a single reference image. <em><strong>Phantom</strong></em> can maintain the integrity of various types of subjects, including objects, clothing, animals, virtual characters, and more.
+      </div>
+
+      <div class="flex flex-dynamic">
+
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/0.mov"></video>
+              <div class="prompt">The man puts on the sneakers and starts jogging along the riverbank.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/3.mov"></video>
+            <div class="prompt">A woman in a snow leopard print coat stood in the middle of the ice, looking around, her long hair fluttering in the wind.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/8.mov"></video>
+            <div class="prompt">This bottle of perfume is placed on the beach by the sea, and the waves gently hit it.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/1.mov"></video>
+              <div class="prompt">The little white dog is bouncing and running from a distance, with the living room in the background, blinking its eyes and smiling at the camera.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/2.mov"></video>
+              <div class="prompt">The rabbit bounces on the soft mattress and falls from the bed to the wooden floor.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/6.mov"></video>
+            <div class="prompt">The character is fishing by the river.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/4.mov"></video>
+              <div class="prompt">On the brightly lit animated stage, a woman is standing in front of a microphone, singing passionately.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/7.mov"></video>
+            <div class="prompt">A burly man walks around a glittering Christmas tree, which is covered with colorful decorations and twinkling lights. The man has a kind smile on his face and looks around, with a black belt hanging around his waist.</div>
+          </div>
+          <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/single_ip/5.mov"></video>
+            <div class="prompt">The woman is walking by the seaside in a bikini, then confidently turns around to show the details of the outfit.</div>
+          </div>
+      </div>
+  </section>
+
+    <section id="multi_ip">
+        <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+            Multi-Reference Subject-to-Video Generation
+        </div>
+
+        <div class="description">
+            Subject-to-video generation using multiple reference images. <em><strong>Phantom</strong></em> can achieve realistic interactions between multiple subjects, such as group interactions, product demonstrations, virtual try-on, and more.
+        </div>
+
+        <div class="flex flex-dynamic">
+
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/8.mov"></video>
+                <div class="prompt">A character wearing an outfit in a location turning around and posing to the camera.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/5.mov"></video>
+                <div class="prompt">A woman strolls in the park wearing a dress, with a large area of beautiful flowers in the background.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/9.mov"></video>
+                <div class="prompt">A woman wearing a green bikini strolls by the river and then poses for a photo.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/2.mov"></video>
+                <div class="prompt">The man raised his camera to take pictures on the mountaintop, and the lens moved from near to far, showing the beautiful scenery in front of the man.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/1.mov"></video>
+              <div class="prompt">A fashionable woman stared at a blue bag in the store, then picked it up and observed it carefully.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/10.mov"></video>
+              <div class="prompt">He held the doll against his chest and raised it above his head. Suddenly, the doll exploded, and the pieces were scattered everywhere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/7.mov"></video>
+              <div class="prompt">The two of them were flipping through books in the study.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/0.mov"></video>
+              <div class="prompt">They sat in front of the easel in the studio and painted, with the camera getting closer and closer.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+              <div class="loading-placeholder">
+                  <div class="loading-text">Loading...</div>
+                  <div class="loading-icon">&#9749</div>
+              </div>
+              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/videos/multi_ip/4.mov"></video>
+              <div class="prompt">They were fiercely discussing the solution to a math problem in front of the blackboard, pointing and pointing at the blackboard.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ethics-section">
+        <h3>Ethics Concerns</h3>
+        <p>
+            The images used in these demos are sourced from public domains or generated by models, and are intended solely to showcase the capabilities of this research. If you have any concerns, please contact us at tianxiang.ma@bytedance.com, and we will promptly remove them.
+        </p>
+    </section>
+
+
+    <section class="acknowledgements-section">
+        <h3>Acknowledgements</h3>
+        <p>
+            We would like to express our gratitude to the SEED team for their support. Special thanks to Lu Jiang, Haoyuan Guo, Zhibei Ma, and Sen Wang for their assistance with the model and data. We are also very grateful to Siying Chen, Qingyang Li, and Wei Han for their help with the evaluation. Additionally, we would like to give thanks to Seaweed-APT for providing the website template.
+        </p>
+    </section>
+
+
+    <section class="bibtex-section">
+        <h3>BibTeX</h3>
+        <pre class="bibtex-code">@article{liu2025phantom,
+          title={Phantom: Subject-Consistent Video Generation via Cross-Modal Alignment},
+          author={Liu, Lijie and Ma, Tianxaing and Li, Bingchuan and Chen, Zhuowei and Liu, Jiawei and He, Qian and Wu, Xinglong},
+          journal={arXiv preprint arXiv:2502.11079},
+          year={2025}
+        }</pre>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Clone the items to show neighbors in the carousel
+            $('.carousel-item', '.show-neighbors').each(function () {
+                var next = $(this).next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+                }
+                next.children(':first-child').clone().appendTo($(this));
+            }).each(function () {
+                var prev = $(this).prev();
+                if (!prev.length) {
+                    prev = $(this).siblings(':last');
+                }
+                prev.children(':nth-last-child(2)').clone().prependTo($(this));
+            });
+
+            function playActiveVideo() {
+                // Stop all videos
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+                
+                // Find the active carousel item (the middle one) and play its video
+                var activeVideo = $('#carouselExampleCaptions .carousel-item.active .video-wrapper video.carousel-video').get(0);
+
+                // Play the video only if it exists
+                if (activeVideo) {
+                    activeVideo.play();
+                }
+            }
+
+            // On slide event, pause all videos
+            $('#carouselExampleCaptions').on('slide.bs.carousel', function () {
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+            });
+
+            // On slid event, play the active video
+            $('#carouselExampleCaptions').on('slid.bs.carousel', function () {
+                playActiveVideo();
+            });
+
+            // Play the active video on page load
+            playActiveVideo();
+        });
+    </script>
+
+</body>
+</html>
