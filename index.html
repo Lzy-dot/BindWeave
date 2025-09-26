@@ -1,7 +1,7 @@
 <html lang="en">
   <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>MAGREF</title>
-    <meta name="description" content="Masked Guidance for Any-Reference Video Generation">
+    <title>BindWeave</title>
+    <meta name="description" content="BindWeave: Subject-Consistent Video Generation via Cross-Modal Integration">
     <meta name="keywords" content="Video generation, Diffusion model">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#EDE8F5">
@@ -147,7 +147,7 @@
             padding: 100px 0 80px 0;
             justify-content: center; /* Center content vertically */
             text-align: center; /* Center text alignment */
-            background-image: url('./assets/background.png');
+            /* background-image: url('./assets/background.png'); */
             background-size: cover; /* Cover the entire container */
             background-position: center; /* Center the background image */
             color: #ffffff; /* Ensure text color is readable */
@@ -544,14 +544,38 @@
     </style>
 </head>
 <body>
-    <section id="intro">
-        <div class="content">
-            <div id="title-container">
-              <img id="title-icon" src="./assets/icon-new.png" alt="Icon">
-              <h1 class="title-art"><strong>MAGREF</strong></h1>
-            </div>
-            <h2 class="title-art2">Masked Guidance for Any-Reference Video Generation</h2>
+    <!-- ========= 替换你原来的整个 intro section ========= -->
+<!-- ========= 替换你原来的整个 intro section (修正版) ========= -->
 
+    <section id="intro">
+
+        <!-- 背景视频层 -->
+        <video autoplay loop muted playsinline id="background-video">
+            <source src="assets/magref_video/demo/magref_demo.mp4" type="video/mp4">
+        </video>
+
+        <!-- 内容层 (移除了多余的 .content 嵌套) -->
+        <div class="intro-content">
+            <div id="title-container">
+                <!-- <img id="title-icon" src="./assets/icon-new.png" alt="Icon"> -->
+                <h1 class="title-art"><strong>BindWeave</strong></h1>
+            </div>
+            <h2 class="title-art2">Subject-Consistent Video Generation via Cross-Modal Integration</h2>
+            <div class="authors">
+                <div class="author-block"><a href="https://scholar.google.com/citations?user=WelDcqkAAAAJ&hl=zh-CN">Zhaoyang Li</a><sup>1</sup></div>
+                <div class="author-block"><a href="https://openreview.net/profile?id=~Dongjun_Qian1">Dongjun Qian</a><sup>2</sup></div>
+                <div class="author-block"><a href="https://scholar.google.com/citations?user=Kp3XAToAAAAJ&hl=zh-CN">Kai Su</a><sup>2</sup></div>
+                <div class="author-block"><a href="https://scholar.google.com/citations?user=G6xrfhYAAAAJ&hl=zh-CN">Qishuai Diao</a><sup>2</sup></div>
+                <div class="author-block"><a href="https://openreview.net/profile?id=~Xiangyang_Xia1">Xiangyang Xia</a><sup>2</sup></div>
+                <div class="author-block"><a href="https://openreview.net/profile?id=~Chang_Liu71">Chang Liu</a><sup>2</sup></div>
+                <div class="author-block"><a href="https://scholar.google.com/citations?user=rtO5VmQAAAAJ&hl=zh-CN">Wenfei Yang</a><sup>1</sup></div>
+                <div class="author-block"><a href="https://scholar.google.com/citations?user=9sCGe-gAAAAJ&hl=en">Tianzhu Zhang</a><sup>1</sup></div>
+                <div class="author-block"><a href="https://shallowyuan.github.io/">Zehuan Yuan</a><sup>2</sup></div>
+            </div>
+            <div class="author-affiliation">
+                <div class="author-block"><sup>1</sup>University of Science and technology of China</div>
+                <div class="author-block"><sup>2</sup>ByteDance</div>
+            </div>
             <a class="button" href="https://github.com/MAGREF-Video/MAGREF" target="_blank" rel="noopener noreferrer">
                 <i class="fa fa-github" style="font-size:17px"></i>
                 GitHub
@@ -565,18 +589,19 @@
             <a class="button" href="https://github.com/MAGREF-Video/MAGREF" target="_blank" rel="noopener noreferrer">
                 Benchmark
             </a>
-            
         </div>
 
     </section>
 
-    <!-- 文本标题 -->
-    <div class="container text-center" style="margin-top: 50px;">
-    <p class="title-art3" style="font-size: 1.6em;">Episodes Created from MAGREF-generated Videos</p>
-    <p class="description" style="font-size: 1.0em;">Turn on the sound for a better viewing experience</p>
-    </div>
 
-    <!-- 视频主体 -->
+
+
+    <!-- 文本标题 -->
+    <!-- <div class="container text-center" style="margin-top: 50px;">
+    <p class="title-art3" style="font-size: 1.6em;">Episodes Created from MAGREF-generated Videos</p>
+    <p class="description" style="font-size: 1.0em;">Turn on the sound for a better viewing experience</p> -->
+    <!-- </div> -->
+    <!-- 视频主体
     <div class="show-neighbors" style="display: flex; justify-content: center; flex-direction: column; margin-top: 30px; margin-bottom: 40px;">
     <div style="display: flex; justify-content: center;">
         <div style="
@@ -602,11 +627,7 @@
         ></video>
         </div>
     </div>
-    </div>
-
-
-
-
+    </div> -->
     <section class="acknowledgements-section" style="max-width: 1200px; margin: 0 auto;">
         <div style="
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -620,18 +641,10 @@
                     Abstract
                 </h3>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: white; text-align: left; text-indent: 2em;"></p>
-                        Video generation has made substantial strides with the emergence of deep generative models, especially diffusion-based approaches. 
-                        However, video generation based on multiple reference subjects still faces significant challenges in maintaining multi-subject
-                        consistency and ensuring high generation quality. In this paper, we propose MAGREF, a unified framework for any-reference
-                        video generation that introduces masked guidance to enable coherent multi-subject video synthesis conditioned on diverse reference 
-                        images and a textual prompt. Specifically, we propose (1) a region-aware dynamic masking mechanism that enables a single model to flexibly
-                        handle various subject inference, including humans, objects, and backgrounds, without architectural changes, and (2) a pixel-wise channel
-                        concatenation mechanism that operates on the channel dimension to better preserve appearance features. Our model delivers state-of-the-art
-                        video generation quality, generalizing from single-subject training to complex multi-subject scenarios with coherent synthesis and precise 
-                        control over individual subjects, outperforming existing open-source and commercial baselines. To facilitate evaluation, we also introduce a 
-                        comprehensive multi-subject video benchmark. Extensive experiments demonstrate the effectiveness of our approach, paving the way for scalable, 
-                        controllable, and high-fidelity multi-subject video synthesis. We will open-source implementations & checkpoint of MAGREF together with the 
-                        evaluation benchmark in future.
+                       Diffusion Transformer has shown remarkable abilities in generating high-fidelity videos, delivering visually coherent frames and rich details over extended durations.
+However, existing video generation models still fall short in subject-consistent video generation due to an inherent difficulty in parsing prompts that specify complex spatial relationships, temporal logic, and interactions among multiple subjects. To address this issue, we propose BindWeave, a unified framework that handles a broad range of subject-to-video scenarios from single-subject cases to complex multi-subject scenes with heterogeneous entities. 
+To bind complex prompt semantics to concrete visual subjects, we introduce an MLLM-DiT framework in which a pretrained multimodal large language model performs deep cross-modal reasoning to ground entities and disentangle roles, attributes, and interactions, yielding subject-aware hidden states that condition the diffusion transformer for high-fidelity subject-consistent video generation.
+Experiments on the OpenS2V benchmark demonstrate that our method achieves superior performance across subject consistency, naturalness, and text relevance in generated videos, outperforming existing open-source and commercial models.
                     </p>
         </div>
     </section>

@@ -162,3 +162,41 @@ div.scroll-container {
 @media screen and (max-width: 1024px)  {
   .mobile-break { display: block; }
 }
+
+/* ===== 视频背景 Section 的完整正确样式 ===== */
+
+/* 1. 父容器 (#intro) 作为定位的“舞台” */
+#intro {
+    position: relative; /* 关键：为内部绝对定位的元素提供参考系 */
+    width: 100%;
+    height: 100vh; /* 让 section 高度占满整个屏幕视口 */
+    display: flex; /* 使用 Flexbox 来轻松实现内容的垂直和水平居中 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    text-align: center;
+    overflow: hidden; /* 确保视频不会溢出边界 */
+    color: #ffffff; /* 默认文字颜色为白色 */
+}
+
+/* 2. 视频层 (#background-video) 作为背景 */
+#background-video {
+    position: absolute; /* 关键：脱离文档流，成为可定位的图层 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 关键：像 background-size: cover 一样铺满容器，不变形 */
+    z-index: 1; /* 关键：将视频放在图层 1 */
+}
+
+/* 3. 内容层 (.intro-content) 浮于视频之上 */
+.intro-content {
+    position: relative; /* 关键：让内容也参与堆叠 */
+    z-index: 2; /* 关键：将内容放在图层 2，确保在视频之上 */
+    
+    /* (可选) 添加一个半透明背景和内边距，形成一个漂亮的“卡片”效果 */
+    background: rgba(0, 0, 0, 0.5); /* 50% 透明度的黑色背景，增强文字可读性 */
+    padding: 30px 50px; /* 卡片内部的留白 */
+    border-radius: 15px; /* 卡片的圆角 */
+    max-width: 80%; /* 限制卡片最大宽度，防止在宽屏上过长 */
+}
