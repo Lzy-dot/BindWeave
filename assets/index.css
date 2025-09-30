@@ -200,3 +200,85 @@ div.scroll-container {
     border-radius: 15px; /* 卡片的圆角 */
     max-width: 80%; /* 限制卡片最大宽度，防止在宽屏上过长 */
 }
+
+
+
+.force-center-text {
+    text-align: center !important;
+}
+
+.bibtex-title-align-left {
+    position: relative; 
+    left: -24px;        
+}
+
+.bibtex-container {
+    position: relative; 
+}
+
+.bibtex-box {
+    /* The key change is here! */
+    background-color: rgba(147, 145, 145, 0.97); /* 10% opaque white */
+
+    border: 1px solid #555; /* Changed border to a slightly lighter gray for better contrast on black */
+    border-radius: 5px;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 14px;
+    padding-top: 45px; 
+}
+
+
+.bibtex-box pre {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+/* Copy Button Styling */
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+    background-color: #0056b3;
+}
+
+@keyframes shine {
+  from {
+    background-position: 200% center;
+  }
+  to {
+    background-position: -200% center;
+  }
+}
+
+
+.title-art strong {
+  color: #fff; /* 文字本身是白色 */
+  
+  /* 只设置 text-shadow，不使用 animation */
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 1),   /* 最内层，最亮的白色光 */
+    0 0 16px rgba(255, 255, 255, 0.8), /* 中间层，扩散的白光 */
+    0 0 32px rgba(255, 105, 180, 0.6); /* 最外层，柔和的粉色光晕 */
+}
+
+
+
+
+.footer {
+    margin-top: 80px; /* 你可以随意调整这个数值 */
+}
