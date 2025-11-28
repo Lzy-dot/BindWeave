@@ -959,73 +959,466 @@ Experiments on the OpenS2V benchmark demonstrate that our method achieves superi
     </section>
 
 
+<section id="comparison-with-others"> 
+    <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
+            <strong style="color: #fdfcfc;">Comparison with State-of-the-Art Methods</strong>
+    </div>
+    
+<div class="description"> 
+    We compare our model with the state-of-the-art methods, including 
+    <strong style="color: #87CEFA;">Kling</strong>, 
+    <strong style="color: #87CEFA;">Vidu</strong>, 
+    <strong style="color: #87CEFA;">Pika</strong>, 
+    <strong style="color: #87CEFA;">Hailuo</strong>, 
+    <strong style="color: #87CEFA;">Skyreels A2</strong>, 
+    <strong style="color: #87CEFA;">Megref</strong>, 
+    <strong style="color: #87CEFA;">Phantom</strong>, and 
+    <strong style="color: #87CEFA;">VACE</strong>. 
+</div>
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> The video features a woman jogging along a trail beside a serene lake. She has short, curly hair and is wearing athletic wear and sneakers. The surrounding trees and the shimmering water create a peaceful atmosphere, while the woman maintains a steady pace, focusing on her exercise. The morning sunlight casts a soft glow on the scene, adding to the sense of calm. 
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+
+    <img src="./assets/ref/singlehuman26.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_singlehuman26.mp4"></video>
+</div>
+<hr style="border: none; border-top: 1px solid #eaeaea; margin: 60px 0;">
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> A man is playing with an American football on the beach.
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+    <img src="./assets/ref/faceobj6_1.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+    <img src="./assets/ref/faceobj6_2.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+    <img src="./assets/ref/faceobj6_3.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_faceobj6.mp4"></video>
+</div>
+
+<hr style="border: none; border-top: 1px solid #eaeaea; margin: 60px 0;">
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> The video begins with a person dribbling a basketball on the court, their movements quick and focused. The camera shifts to a close-up of their basketball shoes as they pivot and make a sharp move, the soles gripping the court with each step. The shoes’ sleek design and vibrant colors are highlighted as they absorb the impact of quick cuts and jumps. The camera follows the motion of the shoes, capturing the flexing of the material as the player springs for a shot. The sound of sneakers squeaking against the hardwood and the basketball bouncing fills the background, emphasizing the fast-paced energy of the game. The shoes remain the focal point, their performance and durability in action as the player continues to move.
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+
+    <img src="./assets/ref/singleobj3.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_singleobj3.mp4"></video>
+</div>
+
+<hr style="border: none; border-top: 1px solid #eaeaea; margin: 60px 0;">
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> The video showcases the process of frying French fries in a commercial kitchen setting. It begins with a close-up of a metal fryer basket filled with golden, crispy French fries being lifted out of a fryer by a person wearing white gloves. The basket is held above a stainless steel fryer, which contains more fries submerged in hot oil. The person tilts the basket to drain excess oil from the fries, allowing it to drip back into the fryer. This action is repeated several times to ensure all the oil is drained. The background is dimly lit, focusing the viewer's attention on the frying process. The video emphasizes the meticulous care taken in preparing the fries, highlighting the importance of draining excess oil for the perfect texture and taste.
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+    <img src="./assets/ref/multiobj18_1.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+    <img src="./assets/ref/multiobj18_2.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_multiobj18.mp4"></video>
+</div>
+<hr style="border: none; border-top: 1px solid #eaeaea; margin: 60px 0;">
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> The video features a man with dark-haired hair, wearing a blue tank top and holding a pink tank top on a hanger. he appears to be in a clothing store or a similar retail environment, as there are racks of clothes visible in the background. The man is speaking to the camera, possibly providing a review or discussing the tank top he is holding. he has colorful bracelets on his wrist and is wearing a necklace with multiple beads. his expression suggests he is engaged in a conversation or presentation. The setting seems to be indoors, with artificial lighting illuminating the scene.
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+    <img src="./assets/ref/singleface15.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_singleface15.mp4"></video>
+</div>
+<hr style="border: none; border-top: 1px solid #eaeaea; margin: 60px 0;">
+
+<p style="font-size: 15px; margin: 10px 0; text-align: center; font-family: 'Courier New', Courier, monospace;"> 
+    <strong>Prompt:</strong> A man sitting in the office, a cat sitting beside him.
+</p>
+
+<div class="reference-images-container" style="margin-bottom: 20px; text-align: center;">
+    <p style="margin-bottom: 5px;"><strong>Reference images:</strong></p>
+    <img src="./assets/ref/humanobj8_1.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+    <img src="./assets/ref/humanobj8_2.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+    <img src="./assets/ref/humanobj8_3.png" 
+         alt="" 
+         style="height: 150px; width: auto; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+</div>
+
+<div class="prompt-wrap">
+    <video style="width: 100%; height: auto; display: block;" autoplay playsinline muted loop src="./assets/bindweave_video/rebuttal_humanobj8.mp4"></video>
+</div>
+
+</section>
 
 
-<!-- 
-        <section id="multi_ip">
-        <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;">
-            Multi-entity-to-video
-        </div>
 
-        <div class="description">
-            Given multiple reference images of objects, <strong>BindWeave</strong> composes a prompt guided video that preserves the specific identity of each entity, including shape, texture, color, and branding. The model renders plausible motion, interactions, and spatial arrangement while maintaining temporal coherence and consistent appearance.
-        </div>
+<section id="cp"> 
+    <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;"> 
+         <strong style="color: #fdfcfc;">Copy-Paste issue Discussion </strong>
+    </div> 
+    <div class="description"> 
+        We evaluate whether conditioning on reference images causes pixel-level "copy-paste" artifacts by presenting conflict-coherence cases that intentionally mismatch the reference image and the prompted outcome (e.g., smiling reference → painful, tearful video; painful reference → joyful smiling video; pose-mismatch with prompted head turns/gaze shifts). Across these examples, the model follows the instruction rather than pasting pixels: it modifies facial musculature and pose to match the prompt while preserving identity, maintains smooth temporal transitions without “stuck frames,” and exhibits coherent motion instead of static overlays.
+    </div> 
+    
+    <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/singleface_24.mp4"></video> 
+            <div class="prompt">A woman wearing a colorful scarf and cozy sweater, her eyes sparkling with a hint of wonder as she looks around at the falling leaves. Her lips curl into a slight, content smile, adding a touch of warmth to the cool air. Golden and orange leaves cascade softly around her, with the trees forming a vibrant canopy overhead. The shot is captured from the waist up, showcasing her relaxed stance and the intricate patterns of her scarf as they complement the autumn backdrop.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/singleface_24_cry.mp4"></video> 
+            <div class="prompt">A woman wearing a colorful scarf and cozy sweater, her eyes filled with tears as she looks around at the falling leaves. Her lips tremble into a slight, pained expression, adding a touch of poignancy to the cool air. Golden and orange leaves cascade softly around her, with the trees forming a vibrant canopy overhead. The shot is captured from the waist up, showcasing her relaxed stance and the intricate patterns of her scarf as they complement the autumn backdrop.</div> 
+        </div> 
+    </div> 
 
-        <div class="flex flex-dynamic">
+    <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multihuman_10.mp4"></video> 
+            <div class="prompt">The video depicts an emotional scene set outdoors, likely in a park or wooded area, given the blurred greenery and trees in the background. The lighting suggests it is daytime, possibly overcast due to the soft shadows. A man and a woman are the central figures. The man, wearing a light blue denim shirt, has his arm around the woman's shoulder, offering comfort. The woman, dressed in a brown leather jacket, appears distressed, covering her face with her hands at one point. Her posture and facial expression suggest she might be crying or overwhelmed by emotion. The man leans in closer to the woman, maintaining physical contact, which indicates he is trying to console her. His body language shows concern and support. The woman's movements are minimal, primarily involving her hands covering her face and then pulling them away slightly. The camera remains static throughout the sequence, focusing on capturing the interaction between the two individuals without any noticeable panning or zooming. The framing centers on their upper bodies, emphasizing their facial expressions and gestures. The overall mood conveyed is one of empathy and emotional support within a natural outdoor setting.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multihuman_10_smile.mp4"></video> 
+            <div class="prompt">The video depicts an upbeat scene set outdoors, likely in a park or wooded area, given the blurred greenery and trees in the background. The lighting suggests it is daytime, possibly overcast due to the soft shadows. A man and a woman are the central figures. The man, wearing a light blue denim shirt, has his arm comfortably around the woman's shoulder in a friendly, cheerful manner. The woman, dressed in a brown leather jacket, appears delighted, her face bright with a smile. Her posture and facial expression suggest she is happy and engaged in the moment. The man leans in closer to the woman, maintaining light, friendly physical contact, which indicates he is sharing a joyful conversation. His body language shows enthusiasm and warmth. The woman's movements are relaxed and expressive, occasionally gesturing with her hands as she talks and laughs. The camera remains static throughout the sequence, focusing on capturing the interaction between the two individuals without any noticeable panning or zooming. The framing centers on their upper bodies, emphasizing their smiling faces and lively gestures. The overall mood conveyed is one of happiness and friendly connection within a natural outdoor setting.</div> 
+        </div> 
+    </div> 
+        <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/diff_cloth.mp4"></video> 
+            <div class="prompt">A woman dressed in a flowing red traditional Chinese gown, with elegant hair ornaments and a pair of silk tassels, holds a delicate round silk fan in her gloved hands. She fans herself slowly, her movements graceful and deliberate, exuding a serene poise. The background is a grand Chinese palace hall with soaring coffered ceilings, carved wooden screens, lacquered tables and chairs, and ornate bronze candlesticks, all bathed in soft, warm lighting.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/singlehuman_27_rebuttal.mp4"></video> 
+            <div class="prompt">A girl dances in a snowy landscape, moving gracefully across the snow as her legs spring and bounce with lively jumps.</div> 
+        </div> 
+    </div> 
+</section> 
 
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-                <div class="loading-placeholder">
-                    <div class="loading-text">Loading...</div>
-                    <div class="loading-icon">&#9749</div>
-                </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/faceobj_1.mp4"></video>
-                <div class="prompt">A man playing with his dog in front of the house.</div>
-            </div>
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-                <div class="loading-placeholder">
-                    <div class="loading-text">Loading...</div>
-                    <div class="loading-icon">&#9749</div>
-                </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/faceobj_6.mp4"></video>
-                <div class="prompt">A man is playing with an American football on the beach.</div>
-            </div>
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-                <div class="loading-placeholder">
-                    <div class="loading-text">Loading...</div>
-                    <div class="loading-icon">&#9749</div>
-                </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/faceobj_11.mp4"></video>
-                <div class="prompt">A woman reads a book on a bridge.</div>
-            </div>
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-                <div class="loading-placeholder">
-                    <div class="loading-text">Loading...</div>
-                    <div class="loading-icon">&#9749</div>
-                </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/humanobj_8.mp4"></video>
-                <div class="prompt">A man sitting in the office, a cat sitting beside him.</div>
-            </div>
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-              <div class="loading-placeholder">
-                  <div class="loading-text">Loading...</div>
-                  <div class="loading-icon">&#9749</div>
-              </div>
-              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/humanobj_12.mp4"></video>
-              <div class="prompt">A man sitting in the park, a cat walking around his feet.</div>
-            </div>
-            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
-              <div class="loading-placeholder">
-                  <div class="loading-text">Loading...</div>
-                  <div class="loading-icon">&#9749</div>
-              </div>
-              <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/faceobj_13.mp4"></video>
-              <div class="prompt">A woman stands on the bridge, wearing a black one-piece swimsuit with the Nike Air logo across the front. The swimsuit fits snugly, and she poses confidently against the backdrop of the bridge, her arms relaxed by her sides.</div>
-            </div>
-        </div>
-    </section> -->
+<section id="cp"> 
+    <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;"> 
+         <strong style="color: #fdfcfc;">Robustness Across Reference Scales and Dynamic Zoom (Zoom-In/Zoom-Out) </strong>
+    </div> 
+    <div class="description"> 
+       To demonstrate our model's robustness to different reference scales, we present generation results under varying reference scales.
+    </div> 
+    
+    <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multihuman_6.mp4"></video> 
+            <div class="prompt">The video captures a scene set indoors, likely in an art studio or classroom, where two individuals are engaged in a creative activity. The primary focus is on a man seated at an easel, actively painting on a canvas. He is wearing a white shirt and a dark apron splattered with paint, indicating his involvement in the artistic process. His posture suggests concentration as he works on his artwork. A woman stands beside him, leaning slightly forward with her arms around his shoulders. She is dressed in a denim jacket and a patterned dress, her hands resting gently on his shoulders and occasionally gesturing towards the canvas. Her body language conveys a sense of encouragement and support as she interacts with the artist. The background reveals shelves filled with various art supplies, including jars and containers, suggesting a well-equipped workspace. A partially visible painting on the wall adds to the artistic ambiance of the setting. The lighting appears bright and even, illuminating the scene without harsh shadows, which enhances the clarity of the environment. Throughout the video, there is minimal movement from both individuals. The woman remains mostly stationary, her gestures directed towards the canvas, while the man continues his painting. The camera maintains a steady, static shot focused on capturing the interaction between the two figures and their shared artistic endeavor. There are no significant changes in the positioning or actions of the subjects, and the overall atmosphere is one of calm collaboration and creativity.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multihuman_6_rebuttal.mp4"></video> 
+            <div class="prompt">The video captures a scene set indoors, likely in an art studio or classroom, where two individuals are engaged in a creative activity. The primary focus is on a man seated at an easel, actively painting on a canvas. He is wearing a white shirt and a dark apron splattered with paint, indicating his involvement in the artistic process. His posture suggests concentration as he works on his artwork. A woman stands beside him, leaning slightly forward with her arms around his shoulders. She is dressed in a denim jacket and a patterned dress, her hands resting gently on his shoulders and occasionally gesturing towards the canvas. Her body language conveys a sense of encouragement and support as she interacts with the artist. The background reveals shelves filled with various art supplies, including jars and containers, suggesting a well-equipped workspace. A partially visible painting on the wall adds to the artistic ambiance of the setting. The lighting appears bright and even, illuminating the scene without harsh shadows, which enhances the clarity of the environment. Throughout the video, there is minimal movement from both individuals. The woman remains mostly stationary, her gestures directed towards the canvas, while the man continues his painting. The camera maintains a steady, static shot focused on capturing the interaction between the two figures and their shared artistic endeavor. There are no significant changes in the positioning or actions of the subjects, and the overall atmosphere is one of calm collaboration and creativity.</div> 
+        </div> 
+    </div> 
+
+<div class="flex flex-dynamic"> 
+            <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/faceobj_13.mp4"></video> 
+            <div class="prompt">A woman stands on the bridge, wearing a black one-piece swimsuit with the Nike Air logo across the front. The swimsuit fits snugly, and she poses confidently against the backdrop of the bridge, her arms relaxed by her sides.</div> 
+         </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_23_rebuttal.mp4"></video> 
+            <div class="prompt">In a well-lit room featuring a large window and wooden shelves adorned with potted plants, a group of individuals is engaged in a study session. A set of books and notebooks is spread across the wooden table where they are sitting. A laptop rests on the left side of the table, alongside a water bottle and a small soft-sided bag. The participants are actively writing or discussing, indicating a focused and collaborative environment. The scene is lively yet studious, signifying a productive group meeting aimed at accomplishing academic or professional tasks. A speaker is visible on the shelf, suggesting the possibility of background music enhancing their work atmosphere.</div> 
+        </div> 
+    </div> 
+</section> 
+
+<section id="cp"> 
+    <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;"> 
+        <strong style="color: #fdfcfc;">Comparison of T5-only vs. MLLM+T5 in More Complex Scenarios </strong>
+    </div> 
+    <div class="description"> 
+       We evaluate several complex multi-subject interaction scenarios to highlight that MLLM+T5 exhibits stronger reasoning capabilities compared to the T5-only model.
+       <strong style="color: #87CEFA;">The videos on the left are from the T5-only model, and the BindWeave videos on the right correspond to MLLM+T5</strong>. <strong style="color: #f287fa;">In the final "basketball" example, we additionally include results from Kling: the leftmost is T5-only, the middle is Kling, and the rightmost is our MLLM+T5.</strong>
+       
+    </div> 
+    
+    <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multiobj_5_T5_rebuttal.mp4"></video> 
+            <div class="prompt">The video showcases a cooking process in a kitchen setting. It begins with a person using a long-handled spoon to stir and flip a mixture of vegetables, including red and yellow bell peppers and onions, in a black wok over a gas stove. The vegetables are being cooked at a high temperature, as indicated by the steam rising from the wok. The person then adds a dark liquid, likely soy sauce, from a bottle into the wok, enhancing the flavor of the dish. The background features various bottles and kitchen equipment, suggesting a professional or well-equipped home kitchen environment. The focus remains on the cooking process, highlighting the dynamic movement of the vegetables and the addition of ingredients.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/multiobj_5_MLLM_rebuttal.mp4"></video> 
+            <div class="prompt">The video showcases a cooking process in a kitchen setting. It begins with a person using a long-handled spoon to stir and flip a mixture of vegetables, including red and yellow bell peppers and onions, in a black wok over a gas stove. The vegetables are being cooked at a high temperature, as indicated by the steam rising from the wok. The person then adds a dark liquid, likely soy sauce, from a bottle into the wok, enhancing the flavor of the dish. The background features various bottles and kitchen equipment, suggesting a professional or well-equipped home kitchen environment. The focus remains on the cooking process, highlighting the dynamic movement of the vegetables and the addition of ingredients.</div> 
+        </div> 
+    </div> 
+
+        <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_16_T5.mp4"></video> 
+            <div class="prompt">In this video, featuring a few essential travel items. The most prominent object is a grey fedora hat, carefully placed on top of folded clothing. Beside the hat, there lies a white instant camera, ready to capture memories on the go. Beneath these items, a pair of light blue denim jeans is visible, with a passport resting on top of the jeans, signifying an imminent journey. Rolled-up sweaters and a brown fabric provide additional packing beneath and around these primary objects, offering both a cozy aesthetic and practical travel items. This snapshot offers a glimpse into a thoughtfully prepared travel adventure.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_16_rebuttal.mp4"></video> 
+            <div class="prompt">In this video, featuring a few essential travel items. The most prominent object is a grey fedora hat, carefully placed on top of folded clothing. Beside the hat, there lies a white instant camera, ready to capture memories on the go. Beneath these items, a pair of light blue denim jeans is visible, with a passport resting on top of the jeans, signifying an imminent journey. Rolled-up sweaters and a brown fabric provide additional packing beneath and around these primary objects, offering both a cozy aesthetic and practical travel items. This snapshot offers a glimpse into a thoughtfully prepared travel adventure.</div> 
+        </div> 
+    </div> 
+
+        <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_18_T5.mp4"></video> 
+            <div class="prompt">In a dimly lit room warmed by the glow of a flickering candle, a delicate hand writes with a quill on parchment. The quill, meticulously dipped in ink, glides over the paper leaving elegant strokes behind. To the side, a bundle of rolled scrolls tied with ribbon awaits. A stopwatch with a silver chain rests atop an open book, marking time as the writing progresses. Nearby, a collection of various keys lies, with one key protruding out. The scene exudes an aura of timeless dedication, capturing the essence of a writer immersed in their craft amidst artifacts of profound significance.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_18_rebuttal.mp4"></video> 
+            <div class="prompt">In a dimly lit room warmed by the glow of a flickering candle, a delicate hand writes with a quill on parchment. The quill, meticulously dipped in ink, glides over the paper leaving elegant strokes behind. To the side, a bundle of rolled scrolls tied with ribbon awaits. A stopwatch with a silver chain rests atop an open book, marking time as the writing progresses. Nearby, a collection of various keys lies, with one key protruding out. The scene exudes an aura of timeless dedication, capturing the essence of a writer immersed in their craft amidst artifacts of profound significance.</div> 
+        </div> 
+                <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_23_T5.mp4"></video> 
+            <div class="prompt">In a well-lit room featuring a large window and wooden shelves adorned with potted plants, a group of individuals is engaged in a study session. A set of books and notebooks is spread across the wooden table where they are sitting. A laptop rests on the left side of the table, alongside a water bottle and a small soft-sided bag. The participants are actively writing or discussing, indicating a focused and collaborative environment. The scene is lively yet studious, signifying a productive group meeting aimed at accomplishing academic or professional tasks. A speaker is visible on the shelf, suggesting the possibility of background music enhancing their work atmosphere.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_23_rebuttal.mp4"></video> 
+            <div class="prompt">In a well-lit room featuring a large window and wooden shelves adorned with potted plants, a group of individuals is engaged in a study session. A set of books and notebooks is spread across the wooden table where they are sitting. A laptop rests on the left side of the table, alongside a water bottle and a small soft-sided bag. The participants are actively writing or discussing, indicating a focused and collaborative environment. The scene is lively yet studious, signifying a productive group meeting aimed at accomplishing academic or professional tasks. A speaker is visible on the shelf, suggesting the possibility of background music enhancing their work atmosphere.</div> 
+        </div> 
+    </div> 
+            <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_25_T5.mp4"></video> 
+            <div class="prompt">A person sits on a green park bench, admiring the outdoors. Before them, a laptop emblazoned with the iconic Apple logo rests slightly open on their lap, though they're not currently using it. Surrounding them is a tranquil cityscape, with quaint houses and tree-lined street corners. Initially, their attention is focused on the laptop, but quickly shifts to a newspaper. They flip through the pages, jumping from article to article, occasionally pausing to bring the paper closer for a better read. A utility pole stands in the background. The setting sun creates a halo in the lens, casting a serene glow over the tranquil scene.</div> 
+        </div> 
+        
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_25_rebuttal.mp4"></video> 
+            <div class="prompt">A person sits on a green park bench, admiring the outdoors. Before them, a laptop emblazoned with the iconic Apple logo rests slightly open on their lap, though they're not currently using it. Surrounding them is a tranquil cityscape, with quaint houses and tree-lined street corners. Initially, their attention is focused on the laptop, but quickly shifts to a newspaper. They flip through the pages, jumping from article to article, occasionally pausing to bring the paper closer for a better read. A utility pole stands in the background. The setting sun creates a halo in the lens, casting a serene glow over the tranquil scene.</div> 
+        </div> 
+    </div> 
 
 
+<div class="flex flex-dynamic"> 
+            <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/basketball_T5.mp4"></video> 
+            <div class="prompt">A realistic indoor basketball scene featuring a standard basketball court and four basketball players: two of them are teammates wearing identical uniforms (same team), with one of these teammates in an offensive role (e.g., dribbling or preparing to pass), while the remaining two players are opponents acting as defenders, positioned to guard the offensive player and the other teammate respectively.</div> 
+         </div> 
+                 <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/basketball_kling.mp4"></video> 
+            <div class="prompt">A realistic indoor basketball scene featuring a standard basketball court and four basketball players: two of them are teammates wearing identical uniforms (same team), with one of these teammates in an offensive role (e.g., dribbling or preparing to pass), while the remaining two players are opponents acting as defenders, positioned to guard the offensive player and the other teammate respectively.</div> 
+        </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/basketball_MLLM.mp4"></video> 
+            <div class="prompt">A realistic indoor basketball scene featuring a standard basketball court and four basketball players: two of them are teammates wearing identical uniforms (same team), with one of these teammates in an offensive role (e.g., dribbling or preparing to pass), while the remaining two players are opponents acting as defenders, positioned to guard the offensive player and the other teammate respectively.</div> 
+        </div> 
+    </div> 
+</section> 
 
+
+<section id="cp"> 
+    <div class="title" style="font-family: 'Alegreya'; font-size: 1.6em;"> 
+         <strong style="color: #fdfcfc;">Reference Scalability Evaluation: Five Subjects as References </strong>
+    </div> 
+    <div class="description"> 
+       To address scalability, this section evaluates our framework using five reference subjects—exceeding the typical 1-4 range noted in the paper. Without changing the training setup, we input five distinct reference subjects at inference and assess identity consistency, detail fidelity, and temporal stability in the generated results. The outcomes show that our method generalizes beyond the training-time default, preserving coherent identity cues and high-quality textures without noticeable identity drift or texture flicker. 
+    </div> 
+    
+    <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_16_rebuttal.mp4"></video> 
+            <div class="prompt">In this video, featuring a few essential travel items. The most prominent object is a grey fedora hat, carefully placed on top of folded clothing. Beside the hat, there lies a white instant camera, ready to capture memories on the go. Beneath these items, a pair of light blue denim jeans is visible, with a passport resting on top of the jeans, signifying an imminent journey. Rolled-up sweaters and a brown fabric provide additional packing beneath and around these primary objects, offering both a cozy aesthetic and practical travel items. This snapshot offers a glimpse into a thoughtfully prepared travel adventure.</div> 
+        </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_18_rebuttal.mp4"></video> 
+            <div class="prompt">In a dimly lit room warmed by the glow of a flickering candle, a delicate hand writes with a quill on parchment. The quill, meticulously dipped in ink, glides over the paper leaving elegant strokes behind. To the side, a bundle of rolled scrolls tied with ribbon awaits. A stopwatch with a silver chain rests atop an open book, marking time as the writing progresses. Nearby, a collection of various keys lies, with one key protruding out. The scene exudes an aura of timeless dedication, capturing the essence of a writer immersed in their craft amidst artifacts of profound significance.</div> 
+        </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_19_rebuttal.mp4"></video> 
+        <div class="prompt">In this vibrant image, several flamingos, recognizable by their striking pink feathers, stand on the surface of shallow water, feeding. The flamingos dip their heads into colorful food bowls, particularly the red and purple ones, filled with food. They are surrounded by numerous black and gray crows, some perched on the bowls next to the flamingos, others pecking at the food themselves. The crows are very active, flapping their wings and hopping across the water, which is shown trapped by a wire fence in the background. The reflections of the flamingos and crows on the water's surface add to the lively atmosphere created by the light and shadows on the water.</div> 
+        </div> 
+    </div> 
+
+        <div class="flex flex-dynamic"> 
+        <!-- First Video Block -->
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_23_rebuttal.mp4"></video> 
+            <div class="prompt">In a well-lit room featuring a large window and wooden shelves adorned with potted plants, a group of individuals is engaged in a study session. A set of books and notebooks is spread across the wooden table where they are sitting. A laptop rests on the left side of the table, alongside a water bottle and a small soft-sided bag. The participants are actively writing or discussing, indicating a focused and collaborative environment. The scene is lively yet studious, signifying a productive group meeting aimed at accomplishing academic or professional tasks. A speaker is visible on the shelf, suggesting the possibility of background music enhancing their work atmosphere.</div> 
+        </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_25_rebuttal.mp4"></video> 
+            <div class="prompt">A person sits on a green park bench, admiring the outdoors. Before them, a laptop emblazoned with the iconic Apple logo rests slightly open on their lap, though they're not currently using it. Surrounding them is a tranquil cityscape, with quaint houses and tree-lined street corners. Initially, their attention is focused on the laptop, but quickly shifts to a newspaper. They flip through the pages, jumping from article to article, occasionally pausing to bring the paper closer for a better read. A utility pole stands in the background. The setting sun creates a halo in the lens, casting a serene glow over the tranquil scene.</div> 
+        </div> 
+        <div class="prompt-wrap"> 
+            <div class="loading-placeholder"> 
+                <div class="loading-text">Loading...</div> 
+                <div class="loading-icon">&#9749</div> 
+            </div> 
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/bindweave_video/Hard-Case_Dev_27_rebuttal.mp4"></video> 
+        <div class="prompt">In a serene park setting, a young person with pink hair is seated on a stone bench, engrossed in handling a vintage camera. Surrounding her are tall trees with purple foliage, hinting at the onset of autumn with fallen leaves scattered on the ground. Parked cars line the distant background, subtly blending into the serene environment. The person, dressed in a floral blouse and stylish green high-waisted pants, appears focused on preparing the camera, adjusting its settings diligently. The scene captures a moment of quiet reflection intermixed with the vintage charm of analog photography.</div> 
+        </div> 
+    </div> 
+
+</section> 
 
     <section class="ethics-section">
         <h3>Ethics Concerns</h3>

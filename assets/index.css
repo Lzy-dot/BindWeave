@@ -282,3 +282,54 @@ div.scroll-container {
 .footer {
     margin-top: 80px; /* 你可以随意调整这个数值 */
 }
+
+#comparison-with-others .prompt-wrap {
+    position: relative !important; 
+    width: 100% !important;
+    height: 0 !important; 
+
+    padding-bottom: 8.125% !important; 
+    
+    background-color: #000; 
+    overflow: hidden;      
+}
+
+
+#comparison-with-others .prompt-wrap video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#comparison-with-others .prompt-wrap .loading-placeholder {
+    display: none !important;
+}
+
+    /* Scoped styles for the multi_ip section */
+    #cp .flex-dynamic {
+        display: flex;          /* 1. Set the container to use Flexbox */
+        flex-direction: row;    /* 2. Arrange children horizontally */
+        width: 100%;            /* 3. Make the container span the full width */
+        gap: 8px;               /* 4. (Optional) Add a small gap between the videos */
+    }
+
+    #cp .prompt-wrap {
+        flex: 1;                /* 5. Make each video wrapper grow to fill available space equally */
+        min-width: 0;           /* Prevents overflow issues with flex items */
+    }
+
+    #cp .prompt-wrap video {
+        width: 100%;            /* 6. Make the video fill its wrapper */
+        height: auto;           /* Maintain aspect ratio */
+        display: block;         /* Remove any extra space below the video */
+    }
+
+    /* Basic styling for the prompt text below the video */
+    #cp .prompt {
+        text-align: center;
+        padding: 10px 5px;
+        font-size: 14px;
+        color: #ccc;
+    }
